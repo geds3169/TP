@@ -149,7 +149,7 @@ cd tp-odoo
 Clone du repository existant sur le github
 
 ```bash
-git clone <https://repo.git>  des manifestes préalablement créés.
+git clone https://github.com/geds3169/TP-odoo.git  #des manifestes préalablement créés.
 ```
 
 Création du secret (chiffrement du mot de passe)
