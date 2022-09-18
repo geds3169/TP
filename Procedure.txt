@@ -112,6 +112,9 @@ kubectl apply -f .
 # 
 # Cela devrait fonctionner à la deuxième reprise.
 #
+# L'ajout de 01 au début du fichier odoo-deployment.yaml semble règler le problème,
+# il semble y avoir une hiérarchie lors d'execution de l'"apply"
+#
 ############################################################################
 
 
