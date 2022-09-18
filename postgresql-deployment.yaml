@@ -21,8 +21,8 @@ spec:
           value: myodoo
         - name: POSTGRES_PASSWORD
           valueFrom:
-			  - name: postgresql_password
-				  key: odoo
+	- name: postgresql_password
+	  key: odoo
         - name: POSTGRES_USER
           value: odoo
         - name: PGDATA
