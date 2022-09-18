@@ -38,7 +38,7 @@ echo -e "\n\n${title}\n\n"
 
 echo -e "Add repository helm and install\n"
 # Add helm repository to the system
-sudo bash -c "curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && sudo bash ./get_helm.sh"
+sudo bash -c "curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && bash ./get_helm.sh && rm -f ./get_helm.sh"
 
 echo -e "\n\nupdate repository helm before using\n"
 # Update repository
@@ -49,4 +49,5 @@ echo -e "This part can take a few minutes '(+/-4m)' depending on the performance
 # Install jq iscsi-initiator-utils and add repo longhorn.io use helm
 sudo yum -y install jq iscsi-initiator-utils 
 bash -c "/usr/local/bin/helm repo add longhorn https://charts.longhorn.io/ && kubectl create namespace longhorn-system && /usr/local/bin/helm repo update && /usr/local/bin/helm install longhorn longhorn/longhorn --namespace longhorn-system"
+
 

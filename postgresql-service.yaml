@@ -3,12 +3,13 @@ kind: Service
 metadata:
   name: postgresql
   namespace: tp-odoo
+  labels: 
     app: data-odoo
 spec:
   selector:
     type: NodePort
     app: data-odoo
-    ports:
+  ports:
     - protocol: TCP
       port: 5432
       targetPort: 5432

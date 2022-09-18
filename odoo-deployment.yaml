@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo
+  namespace: tp-odoo
+  labels:
+    app: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: odoo
+          image: odoo:14
+          ports:
+            - containerPort: 8069
+              protocol: TCP
+          env:
+            - name: HOST
+              value: db
+            - name: PORT
+              value: '5432'
+            - name: USER
+              value: odoo
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-password
+                  key: odoo
+          volumeMounts:
+            - name: pvc-odoo-claim
+              mountPath: /var/www/odoo
+      volumes:
+        - name: pvc-odoo-claim
+          persistentVolumeClaim:
+            claimName: pvc-odoo-claim

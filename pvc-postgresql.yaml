@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pvc-odoo-postgresql-claim
+  namespace: tp-odoo
   labels:
     app: odoo-postgresql
 spec:

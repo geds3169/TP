@@ -13,7 +13,8 @@ Prèsrequis:
 Utilisation du script afin d'installer le StorageClasse: Longhorn
 (celui-ci ne sera utilisé qu'une seule fois).
 
-
+Pour le lancer ne pas utiliser sudo (à condition que l'utilisateur soit autoriser à utiliser kubectl.
+bash ./Helm_Install.sh
 
 Méthode 1 (basique et pas à pas)
 =================================

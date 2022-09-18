@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgresql
@@ -14,25 +14,24 @@ spec:
         app: data-odoo
     spec:
       containers:
-      - env:
-        - name: POSTGRES_DB
-          value: postgres
-        - name: POSTGRES_PASSWORD
-          value: myodoo
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-	    name: postgresql_password
-	    key: odoo
-        - name: POSTGRES_USER
-          value: odoo
-        - name: PGDATA
-          value: db-data
+        - name: odoo
           image: postgres:13
-          ports:
-            - name: http            
+          ports:            
             - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-password
+                  key: odoo
+            - name: POSTGRES_USER
+              value: odoo
+            - name: PGDATA
+              value: db-data
           volumeMounts:
-            - mountPath: /var/lib/odoo
+            - mountPath: /var/lib/postgresql/data
               name: pvc-odoo-postgresql-claim
       volumes:
         - name: pvc-odoo-postgresql-claim
