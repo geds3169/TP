@@ -47,7 +47,7 @@ Création des différents manifestes odoo
 
 Vérification de la validité de chaque manifeste avec le plugins kubeval
 
-#### POSTGRESQL
+#### POSTGRESQL
 
 Création du namespace afin d'isoler l'application
 
@@ -116,7 +116,7 @@ Pour se connecter au pod odoo-postgresql
 kubectl exec -it <nom du pod> --  psql -h localhost -U odoo --password -p 5432 db-odoo-postgresql
 ```
 
-#### odoo
+#### odoo
 
 La méthodologie applicative est identique à celle de postgresql
 
