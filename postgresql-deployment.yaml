@@ -15,13 +15,13 @@ spec:
     spec:
       containers:
       - env:
-        - name: HOST
-          value: db
-        - name: PASSWORD
-          valueFrom:
-            name: odoo-password
-            key: odoo
-        - name: odoo-postgresql
+        - name: POSTGRES_DB
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: myodoo
+        - name: POSTGRES_PASSWORD
+          value: odoo
+          POSTGRES_USER: odoo
           image: postgres:13
           ports:
             - name: http            
