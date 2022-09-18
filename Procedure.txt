@@ -33,7 +33,7 @@ cd tp-odoo
 # odoo postgresql
 #########################
 # Création du namespace afin d'isoler l'application
-kubectl apply -f oddo-namespace.yaml
+kubectl apply -f odoo-namespace.yaml
 
 # Vérification de la création
 kubectl -n tp-odoo get ns
@@ -42,14 +42,14 @@ kubectl -n tp-odoo get ns
 kubectl apply -f pvc-odoo-claim.yaml
 
 # Création du secret (chiffrement du mot de passe)
-kubectl create secret generic  odoo-pgsql-password --from-literal=odoo=YOUR_PASSWORD -n tp-odoo --dry-run=client -o yaml > odoo-pgsql-secret.yaml
+kubectl create secret generic postgresql-password --from-literal=odoo=YOUR_PASSWORD -n tp-odoo --dry-run=client -o yaml > odoo-pgsql-secret.yaml
 kubectl apply -f odoo-pgsql-secret.yaml 
 
 # Création du conteneur postgresql
-kubectl apply -f odoo-postgresql-deployment.yaml
+kubectl apply -f postgresql-deployment.yaml
 
 # Défini le type de service et les ports utilisés par le container sur le worker
-odoo-service-postgresql.yaml
+kubectl apply -f postgresql-service.yaml
 
 # Vérification
 kubectl -n tp-odoo get all
@@ -73,8 +73,10 @@ kubectl exec -it <nom du pod> --  psql -h localhost -U odoo --password -p 5432 d
 # odoo web
 #########################
 
-kubectl apply -f odoo-deployment.yml
+kubectl apply -f pvc-odoo-claim.yaml
+kubectl apply -f odoo-deployment.yaml
 kubectl apply -f odoo-service.yaml
+
 
 
 
@@ -102,6 +104,15 @@ kubectl apply -f .
 
 
 
+############################################################################
+#
+# Si une erreur se produit lors de l'execution de la cmd: kubectl apply -f .
+#
+# Relancer la cmd: kubectl apply -f .
+# 
+# Cela devrait fonctionner à la deuxième reprise.
+#
+############################################################################
 
 
 
