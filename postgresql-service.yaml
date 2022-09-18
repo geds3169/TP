@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: tp-odoo
+    app: data-odoo
+spec:
+  selector:
+    type: NodePort
+    app: data-odoo
+    ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

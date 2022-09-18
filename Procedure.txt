@@ -1,0 +1,122 @@
+			TP odoo K8s avec édition des différents manifestes
+			===================================================
+
+###############################################################
+# La mise en place de ce TP est faisable de deux façon,
+# 1) lancer les fichiers un à un de façon méthodique et logique
+# 2) lancer l'ensemble des fichiers via en lui indiquant,
+#    de traiter l'ensemble des fichiers yaml.    
+###############################################################
+
+Prèsrequis:
+===========
+Utilisation du script afin d'installer le StorageClasse: Longhorn
+(celui-ci ne sera utilisé qu'une seule fois).
+
+
+
+Méthode 1 (basique et pas à pas)
+=================================
+# L'avantage de cette méthode et de pouvoir vérifier à chaque étape,
+l'association/bonne exécution des différents fichiers.
+
+# Création du répertoire de travail
+mkdir -p tp-odoo
+
+# On va dans le dossier
+cd tp-odoo
+
+# Création des différents manifestes
+
+#########################
+# odoo postgresql
+#########################
+# Création du namespace afin d'isoler l'application
+kubectl apply -f oddo-namespace.yaml
+
+# Vérification de la création
+kubectl -n tp-odoo get ns
+
+# Création de la demande de volume persistent ("+/-équivalent à une partition") dans le longhorn (stockage persistent)
+kubectl apply -f pvc-odoo-claim.yaml
+
+# Création du secret (chiffrement du mot de passe)
+kubectl create secret generic  odoo-pgsql-password --from-literal=odoo=YOUR_PASSWORD -n tp-odoo --dry-run=client -o yaml > odoo-pgsql-secret.yaml
+kubectl apply -f odoo-pgsql-secret.yaml 
+
+# Création du conteneur postgresql
+kubectl apply -f odoo-postgresql-deployment.yaml
+
+# Défini le type de service et les ports utilisés par le container sur le worker
+odoo-service-postgresql.yaml
+
+# Vérification
+kubectl -n tp-odoo get all
+			ou
+kubectl -n tp-odoo get pod <nom>
+                       rs <nom>
+                       pvc <nom>
+                       svc <nom>					   
+
+# Avoir les informations complètes de chaque objets
+kubectl -n tp-odoo describe pod <nom> # Affiche les infos du conteneur
+--------------------------- rs <nom>  # Affiche les infos sur le réplicas du conteneur
+--------------------------- pvc <nom> # Affiche les infos du Persistent Volume Claim
+--------------------------- svc <nom> # Affiche les infos du service (de l'application, ports)
+
+# Pour se connecter au pod odoo-postgresql
+kubectl exec -it <nom du pod> --  psql -h localhost -U odoo --password -p 5432 db-odoo-postgresql
+
+
+#########################
+# odoo web
+#########################
+
+kubectl apply -f odoo-deployment.yml
+kubectl apply -f odoo-service.yaml
+
+
+
+
+
+Méthode 2 (plus directe et rapide)
+=================================
+# Inconvénient nécessite de prendre chaque éléments pour le débeug
+
+Création du répertoire de travail
+mkdir -p tp-odoo
+
+# On se déplace dans le répertoire de travail et on créer les manifestes
+cd tp-odoo
+
+# Clone du repository existant sur le github
+git clone <https://repo.git>
+
+
+# Création du secret (chiffrement du mot de passe)
+kubectl create secret generic  odoo-pgsql-password --from-literal=odoo=YOUR_PASSWORD -n tp-odoo --dry-run=client -o yaml > odoo-pgsql-secret.yaml
+
+#Mise en oeuvre des différents fichier yaml contenu dans le répertoire du projet (création des conteneur, ect...)
+kubectl apply -f .
+
+
+
+
+
+
+# Supprimer tout ce qui est relatif au projet
+==============================================
+kubectl delete ns tp-odoo
+
+# Vérification
+kubectl get ns
+
+# Nota bene
+============
+# Pour une meilleure résilience l'ajout de ces clés valeurs pourraient être un plus
+# Pour postgresql
+spec:
+  replicas: 1
+  replicas: 1
+  strategy:
+    type: Recreate
