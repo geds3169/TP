@@ -20,8 +20,13 @@ spec:
         - name: POSTGRES_PASSWORD
           value: myodoo
         - name: POSTGRES_PASSWORD
+          valueFrom:
+			  - name: postgresql_password
+				  key: odoo
+        - name: POSTGRES_USER
           value: odoo
-          POSTGRES_USER: odoo
+        - name: PGDATA
+          value: db-data
           image: postgres:13
           ports:
             - name: http            
