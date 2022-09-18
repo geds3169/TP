@@ -27,8 +27,8 @@ spec:
               value: odoo
             - name: PASSWORD
               valueFrom:
-			    name: odoo-password
-				key: odoo
+                name: odoo-password
+                key: odoo
           volumeMounts:
             - name: pvc-odoo-claim
               mountPath: /var/www/odoo
